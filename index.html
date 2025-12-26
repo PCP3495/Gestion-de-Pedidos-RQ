@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GESTIÓN INTEGRAL DE PEDIDOS</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+</head>
+<body>
+
+  <!-- Header (título no fijo) -->
+  <header id="main-header" class="header-static">
+    <div class="header-content header-static-inner">
+      <img src="logo-rq.png" alt="RQ Emprendimientos" class="header-logo">
+      <h1>GESTIÓN INTEGRAL DE PEDIDOS</h1>
+    </div>
+  </header>
+
+  <!-- ============ DASHBOARD (macro contenedor) ============ -->
+  <section id="dashboard-wrapper">
+    <div class="dashboard-header">DASHBOARD</div>
+
+    <!-- Totales generales -->
+    <section id="metric-dashboard" class="main-metrics">
+      <div class="metric-box">
+        <h3>Última Actualización</h3>
+        <p id="metric-last-update" class="metric-value">Calculando...</p>
+      </div>
+      <div class="metric-box">
+        <h3>Total Kits</h3>
+        <p id="metric-total-kits" class="metric-value">Calculando...</p>
+      </div>
+      <div class="metric-box">
+        <h3>Total a granel</h3>
+        <p id="metric-total-granel" class="metric-value">0</p>
+      </div>
+    </section>
+
+    <!-- Totales semanales (Demanda + Capacidad) -->
+    <section id="weekly-metrics-container" class="dynamic-metrics"></section>
+  </section>
+
+  <div class="container">
+    <!-- Configuración -->
+    <section class="config">
+      <h2>⚙️ Configuración de Capacidad</h2>
+      <div class="flex-config">
+        <label for="kitsPorDia">Kits por Mesa/Día (Base Global):</label>
+        <input type="number" id="kitsPorDia" value="1000" min="1"/>
+        <p>Capacidad Base por Mesa/Día: <span id="capacidadMesaDiaria"></span> kits</p>
+      </div>
+
+      <div class="capacidad-semanal">
+        <h3>Ajustes de Capacidad por Semana</h3>
+        <p class="note">Modifica los días productivos o los kits por día para reflejar feriados o cambios de eficiencia.</p>
+        <table id="configCapacidadTabla">
+          <thead>
+            <tr>
+              <th>Semana</th>
+              <th>Días Prod.</th>
+              <th>Kits/Mesa/Día</th>
+              <th>Capacidad Aj. por Mesa/Semana</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Formulario -->
+    <section class="pedidos-form">
+      <h2>➕ Cargar Nuevo Pedido</h2>
+      <form id="nuevoPedidoForm">
+        <input type="hidden" id="pedidoIndex" value="-1"/>
+
+        <div class="form-group">
+          <label for="numeroPedido">N° Pedido:</label>
+          <input type="text" id="numeroPedido" inputmode="numeric" placeholder="Ej: 10234" />
+        </div>
+
+        <div class="form-group">
+          <label for="cliente">Cliente:</label>
+          <input type="text" id="cliente" required/>
+        </div>
+        <div class="form-group">
+          <label for="articulo">Artículo:</label>
+          <input type="text" id="articulo" value="KIT-XXX"/>
+        </div>
+        <div class="form-group">
+          <label for="kitsCantidad">Cantidad (kits reales):</label>
+          <input type="number" id="kitsCantidad" class="no-spin" min="1" required/>
+        </div>
+
+        <div class="form-group">
+          <label for="fechaProduccion">Fecha de Producción:</label>
+          <input type="date" id="fechaProduccion" required/>
+        </div>
+
+        <div class="form-group">
+          <label for="fechaEntrega">Fecha de Entrega:</label>
+          <input type="date" id="fechaEntrega" required/>
+        </div>
+
+        <div class="form-group">
+          <label for="semanaEntrega">Semana (según Producción):</label>
+          <input type="number" id="semanaEntrega" min="1" required/>
+        </div>
+
+        <button type="submit" id="submitButton">Agregar Pedido</button>
+      </form>
+    </section>
+
+    <!-- Tabla -->
+    <section class="pedidos">
+      <h2>📝 Simulación de Producción</h2>
+      <p class="note">Modifica las "Mesas Disponibles" para encontrar el equilibrio de producción.</p>
+
+      <!-- Búsqueda rápida por N° de pedido -->
+      <div class="pedido-search">
+        <label for="buscarNumero">Buscar N° Pedido:</label>
+        <input type="text" id="buscarNumero" inputmode="numeric" placeholder="Ej: 1004">
+        <button type="button" id="btnBuscarPedido" class="btn-report outline">
+          <i class="fas fa-search"></i> Buscar
+        </button>
+      </div>
+
+      <table id="simuladorTabla">
+        <colgroup>
+          <col style="width:5%"><!-- Semana -->
+          <col style="width:7%"><!-- Fecha Prod. -->
+          <col style="width:7%"><!-- Fecha Entrega -->
+          <col style="width:7%"><!-- N° Pedido -->
+          <col style="width:12%"><!-- Cliente -->
+          <col style="width:12%"><!-- Art. -->
+          <col style="width:6%"><!-- Cant -->
+          <col style="width:10%"><!-- Grabado -->
+          <col style="width:6%"><!-- Mesas -->
+          <col style="width:6%"><!-- Capacidad -->
+          <col style="width:6%"><!-- Demanda -->
+          <col style="width:6%"><!-- Disponible -->
+          <col style="width:6%"><!-- Estado -->
+          <col><!-- Acciones (sin cambio) -->
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Semana</th>
+            <th>Fecha Prod.</th>
+            <th>Fecha Entrega</th>
+            <th>N° Pedido</th>
+            <th>Cliente</th>
+            <th>Art.</th>
+            <th>Cantidad</th>
+            <th>Grabado</th>
+            <th>Mesas</th>
+            <th>Capacidad</th>
+            <th>Demanda</th>
+            <th>Disponible</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- Gráfico -->
+    <section class="grafico">
+      <h2>📊 Resumen Visual</h2>
+      <div style="width:100%;height:340px;">
+        <canvas id="produccionChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Informes + filtros -->
+    <section class="informes">
+      <h2>🧾 Informes</h2>
+      <p class="note">Usá los desplegables para seleccionar múltiples valores y luego <b>Aplicar filtros</b>.</p>
+
+      <div class="report-filters">
+        <div class="filter-group">
+          <label>Cliente:</label>
+          <div class="multi-dropdown" data-key="clientes">
+            <button type="button" class="md-trigger" id="md-btn-cliente">Seleccionar (0)</button>
+            <div class="md-menu" id="md-menu-cliente"></div>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Art.:</label>
+          <div class="multi-dropdown" data-key="arts">
+            <button type="button" class="md-trigger" id="md-btn-art">Seleccionar (0)</button>
+            <div class="md-menu" id="md-menu-art"></div>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label>Grabado:</label>
+          <div class="multi-dropdown" data-key="grabados">
+            <button type="button" class="md-trigger" id="md-btn-grabado">Seleccionar (0)</button>
+            <div class="md-menu" id="md-menu-grabado">
+              <label class="md-option"><input type="checkbox" value="NO APLICA"> NO APLICA</label>
+              <label class="md-option"><input type="checkbox" value="ESTAMPADO"> ESTAMPADO</label>
+              <label class="md-option"><input type="checkbox" value="TALLER POLIFAM"> TALLER POLIFAM</label>
+              <label class="md-option"><input type="checkbox" value="TALLER MARIANO"> TALLER MARIANO</label>
+              <label class="md-option"><input type="checkbox" value="ESTAMPADO OK"> ESTAMPADO OK</label>
+              <div class="md-actions">
+                <button type="button" class="md-clear" data-target="grabados">Limpiar</button>
+                <button type="button" class="md-close">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label for="filtroDesde">Desde:</label>
+          <input type="date" id="filtroDesde"/>
+        </div>
+        <div class="filter-group">
+          <label for="filtroHasta">Hasta:</label>
+          <input type="date" id="filtroHasta"/>
+        </div>
+        <div class="filter-group">
+          <label for="filtroNoAplica">No aplica mesa:</label>
+          <select id="filtroNoAplica">
+            <option value="all">(Todos)</option>
+            <option value="soloNoAplica">Solo “No aplica”</option>
+            <option value="soloAplica">Solo “Aplica”</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button id="btnAplicarFiltros" class="btn-report outline">
+            <i class="fas fa-filter"></i> Aplicar filtros
+          </button>
+          <button id="btnLimpiarFiltros" class="btn-report outline">
+            <i class="fas fa-eraser"></i> Limpiar
+          </button>
+        </div>
+      </div>
+
+      <div class="report-actions">
+        <button id="btnExportCSV" class="btn-report">
+          <i class="fas fa-file-csv"></i> Exportar CSV (detalle)
+        </button>
+        <button id="btnPrintPDF" class="btn-report">
+          <i class="fas fa-file-pdf"></i> Imprimir / Guardar PDF
+        </button>
+      </div>
+
+      <div class="apply-ui">
+        <label class="switch">
+          <input type="checkbox" id="toggleAplicarFiltrosUI">
+          <span class="slider"></span>
+        </label>
+        <span class="apply-ui-label">Aplicar filtros también a <b>Tabla y Gráfico</b></span>
+      </div>
+    </section>
+  </div>
+
+  <footer id="floating-footer">
+    DESARROLLADO POR ESTEBAN RODRIGUEZ - RQ EMPRENDIMIENTOS 2025
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

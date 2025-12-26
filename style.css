@@ -1,0 +1,185 @@
+
+/* ===== Reset básico del header global ===== */
+header{background:transparent;color:inherit;padding:0;box-shadow:none;margin:0}
+
+/* Base */
+body{font-family:Arial,sans-serif;margin:0;padding:0 0 70px 0;background:#f4f7f9;color:#333;}
+.container{padding:20px;max-width:1500px;margin:20px auto;background:#fff;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.05);}
+h2{color:#004d99;border-bottom:2px solid #e0e0e0;padding-bottom:8px;margin-top:0}
+
+/* ===== Header estático (no flotante) ===== */
+#main-header.header-static{
+  position: static; /* deja de ser fijo */
+  background:#ffffff;
+  border-bottom:1px solid #e9eef4;
+  margin:0 0 12px 0;
+}
+.header-static-inner{
+  max-width:1500px;
+  margin:0 auto;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.header-logo{height:46px;width:auto;display:block;}
+#main-header h1{margin:0;font-size:1.4em;font-weight:800;color:#004d99;letter-spacing:.4px;}
+
+/* ===== Macro contenedor del DASHBOARD ===== */
+#dashboard-wrapper{
+  background:#fff;
+  border:1px solid #e6eef6;
+  box-shadow:0 4px 14px rgba(0,0,0,.06);
+  border-radius:10px;
+  max-width:1500px;
+  margin:0 auto 16px;  /* ya no necesita despegar del header fijo */
+  overflow:hidden;
+}
+#dashboard-wrapper .dashboard-header{
+  background:#004d99;
+  color:#fff;
+  font-weight:800;
+  letter-spacing:.6px;
+  padding:10px 14px;
+  font-size:1.05em;
+}
+#metric-dashboard{display:flex;justify-content:center;gap:14px;padding:12px 0;margin-bottom:0;background:#f0f3f6;border-bottom:1px solid #e6eef6;}
+.metric-box{background:#fff;padding:10px 16px;border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,.1);text-align:center;min-width:180px;border-top:3px solid #28a745;}
+#metric-dashboard h3{font-size:.85em;color:#495057;margin:0 0 2px 0;}
+.metric-value{font-size:1.2em;font-weight:bold;color:#004d99;}
+
+/* Recuadros semanales (Demanda + Capacidad) */
+#weekly-metrics-container{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
+  padding:12px 16px 16px;border-top:1px solid #e9eef4;background:#fff;
+}
+.week-metric{
+  background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.07);
+  padding:8px 10px;min-width:170px;border:1px solid #e9eef4;
+}
+.week-metric h3{font-size:.8em;margin:0 0 6px 0;color:#495057;text-align:center;}
+.week-metric .metric-duo{display:flex;flex-direction:column;gap:6px;}
+.week-metric .pill{
+  border-radius:8px;padding:6px 8px;text-align:center;font-weight:700;
+  border:1px solid #dfe8f2;background:#f7faff;color:#004d99;
+}
+.week-metric .pill.capacity{
+  background:#f9fff6;color:#1a7a3b;border-color:#d7ead6;
+}
+
+/* Configuración */
+.config{display:flex;flex-direction:column;}
+.flex-config{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.flex-config input{padding:6px;width:84px;border:1px solid #ccc;border-radius:4px;}
+.capacidad-semanal table{width:60%;margin-top:8px;min-width:480px;}
+.capacidad-semanal th,.capacidad-semanal td{padding:4px 6px;text-align:center;border:1px solid #ddd;font-size:.85em;}
+.capacidad-semanal input{width:74px;padding:6px;text-align:center;border-radius:6px;border:1px solid #ccc;}
+
+/* Evitar flechas donde agrego .no-spin */
+.no-spin{-moz-appearance:textfield;appearance:textfield;}
+.no-spin::-webkit-outer-spin-button,.no-spin::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+/* Formulario */
+.pedidos-form{margin-bottom:18px;border:1px solid #004d9930;padding:14px;border-radius:6px;background:#f9f9ff;}
+#nuevoPedidoForm{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.form-group{display:flex;flex-direction:column}
+.form-group input,.form-group select{padding:6px;border:1px solid #ccc;border-radius:4px;width:150px;font-size:.9em}
+#nuevoPedidoForm button{background:#28a745;color:#fff;border:none;padding:8px 12px;border-radius:4px;cursor:pointer;font-weight:700;transition:.2s;font-size:.9em}
+#nuevoPedidoForm button:hover{background:#218838}
+
+/* Tabla ultra compacta */
+#simuladorTabla{width:100%;border-collapse:collapse;margin-top:10px;table-layout:fixed;}
+#simuladorTabla th,#simuladorTabla td{
+  border:1px solid #ddd;
+  padding:3px 2px;
+  text-align:center;
+  font-size:.64em; /* levemente más compacto */
+  vertical-align:middle;
+  line-height:1.0;
+}
+#simuladorTabla th{background:#007bff;color:#fff;font-weight:bold;}
+
+/* Inputs/Selects compactos */
+.mesas-input{width:52px;padding:2px 3px;height:22px;border:1px solid #007bff;text-align:center;border-radius:3px;font-weight:bold;font-size:.74em}
+.select-grabado{width:100%;box-sizing:border-box;padding:2px 5px;height:22px;font-size:.66em;border:1px solid #999;border-radius:6px;background:#fff}
+
+/* Alinear a la izquierda Art. y Grabado */
+#simuladorTabla th:nth-child(6),#simuladorTabla td:nth-child(6),
+#simuladorTabla th:nth-child(8),#simuladorTabla td:nth-child(8){text-align:left;padding-left:8px}
+
+/* Números compactos Cap/Dem/Disp */
+#simuladorTabla td:nth-child(10),
+#simuladorTabla td:nth-child(11),
+#simuladorTabla td:nth-child(12),
+#simuladorTabla th:nth-child(10),
+#simuladorTabla th:nth-child(11),
+#simuladorTabla th:nth-child(12){font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* Acciones (NO TOCAR TAMAÑO) */
+.action-buttons{display:flex;justify-content:center;align-items:center;gap:4px;flex-wrap:wrap;white-space:normal}
+.action-buttons button{background:none;border:1px solid transparent;cursor:pointer;font-size:.72em;border-radius:10px;padding:2px 6px}
+.edit-btn{color:#ffc107;} .delete-btn{color:#dc3545;}
+.action-buttons button:hover{opacity:.88}
+
+/* Píldoras */
+.btn-entregado{background:transparent;color:#0bb4c7;border:1px solid #0bb4c7;padding:2px 6px;border-radius:10px;font-weight:800}
+.btn-entregado.is-on{background:rgba(11,180,199,0.08)}
+.btn-noaplica{background:transparent;color:#6f42c1;border:1px solid #6f42c1;padding:2px 6px;border-radius:10px;font-weight:800}
+.btn-noaplica.is-on{background:rgba(111,66,193,0.35);box-shadow:0 0 0 2px rgba(111,66,193,0.25)}
+
+/* Estados */
+.estado-ok{background:#e6ffed;color:#1a7a3b;font-weight:bold;}
+.estado-deficit{background:#ffebe6;color:#cc0000;font-weight:bold;}
+.note{font-style:italic;color:#666;margin-top:8px;font-size:.9em}
+
+/* Alternado por semana */
+.semana-even{background:#eaf2f8;}
+.semana-odd{background:#ffffff;}
+.week-separator td{border-top:.8px solid #004d99 !important;height:0;padding:0;background:transparent;}
+.row-entregado td{background:#d4edda !important;}
+.row-noaplica td{opacity:.95}
+
+/* Informes + filtros (contenedor) */
+.informes .report-filters{display:grid;grid-template-columns:repeat(6,minmax(140px,1fr));gap:10px;align-items:end;margin-top:8px}
+.informes .filter-group{display:flex;flex-direction:column;gap:6px}
+.informes .filter-group input,.informes .filter-group select{padding:6px;border:1px solid #ccc;border-radius:6px;font-size:.9em}
+.informes .filter-actions{display:flex;gap:8px}
+.informes .report-actions{display:flex;gap:8px;margin-top:10px}
+.btn-report{background:#004d99;color:#fff;border:none;padding:8px 10px;border-radius:6px;cursor:pointer;font-weight:700;font-size:.9em}
+.btn-report:hover{opacity:.92}
+.btn-report.outline{background:transparent;color:#004d99;border:1px solid #004d99}
+
+/* Multi-dropdown */
+.multi-dropdown{position:relative}
+.md-trigger{width:100%;text-align:left;padding:6px 10px;border:1px solid #ccc;border-radius:6px;background:#fff;cursor:pointer;font-size:.9em}
+.md-menu{
+  position:absolute;left:0;right:0;top:110%;z-index:1000;background:#fff;border:1px solid #dfe3ea;border-radius:8px;
+  box-shadow:0 8px 20px rgba(0,0,0,.12);padding:8px;display:none;max-height:240px;overflow:auto
+}
+.multi-dropdown.open .md-menu{display:block;}
+.md-option{display:block;padding:4px 6px;font-size:.9em;color:#333}
+.md-option input{margin-right:8px}
+.md-actions{display:flex;justify-content:space-between;gap:8px;margin-top:8px}
+.md-actions .md-clear,.md-actions .md-close{padding:6px 8px;border-radius:6px;border:1px solid #cfd6e3;background:#f7f9fc;cursor:pointer;font-size:.85em}
+
+/* Toggle aplicar filtros a UI */
+.apply-ui{display:flex;align-items:center;gap:8px;margin-top:10px}
+.apply-ui .apply-ui-label{color:#004d99;font-size:.92em}
+
+/* Switch */
+.switch{position:relative;display:inline-block;width:48px;height:26px}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;transition:.3s;border-radius:26px}
+.slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;background:#fff;transition:.3s;border-radius:50%}
+.switch input:checked + .slider{background:#0bb4c7}
+.switch input:checked + .slider:before{transform:translateX(22px)}
+
+/* Footer flotante */
+#floating-footer{position:fixed;left:0;right:0;bottom:0;background:#6c757d;color:#fff;text-align:center;padding:10px 8px;font-size:.9em;z-index:999;box-shadow:0 -2px 6px rgba(0,0,0,.08);letter-spacing:.2px}
+
+/* Impresión */
+@media print{
+  .config,.pedidos-form,#floating-footer,.informes .report-actions,.informes .report-filters,.apply-ui{display:none !important;}
+  .container{box-shadow:none;margin:0;max-width:100%;}
+  #simuladorTabla th,#simuladorTabla td{font-size:10px;padding:4px 3px;}
+}
